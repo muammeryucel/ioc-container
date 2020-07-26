@@ -6,7 +6,9 @@ public class Main {
 
         System.setProperty("profile", "dev");
 
-        FooService service = new FooService();
+        ServiceLocator serviceLocator = ServiceLocator.getInstance();
+
+        FooService service = serviceLocator.getFooService();
         service.createFoo("test");
     }
 }

@@ -12,6 +12,7 @@ public class ServiceLocator {
     }
 
     private FooRepository fooRepository;
+    private FooService fooService;
 
     private ServiceLocator() {
         try {
@@ -21,9 +22,13 @@ public class ServiceLocator {
                             "service." + profile + ".properties");
             Properties properties = new Properties();
             properties.load(is);
-            String className = properties.getProperty("fooRepository");
-            this.fooRepository = (FooRepository) Class.forName(className)
+
+            this.fooRepository = (FooRepository) Class.forName(properties.getProperty("fooRepository"))
                     .getDeclaredConstructor().newInstance();
+
+            this.fooService = (FooService) Class.forName(properties.getProperty("fooService"))
+                    .getDeclaredConstructor(FooRepository.class).newInstance(fooRepository);
+
         } catch (Exception ex) {
             throw new IllegalStateException("Unable to create service locator.", ex);
         }
@@ -31,5 +36,9 @@ public class ServiceLocator {
 
     public FooRepository getFooRepository() {
         return fooRepository;
+    }
+
+    public FooService getFooService() {
+        return fooService;
     }
 }
