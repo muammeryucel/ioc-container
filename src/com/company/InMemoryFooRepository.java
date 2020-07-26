@@ -9,6 +9,10 @@ public class InMemoryFooRepository implements FooRepository {
     private static AtomicLong ID_GENERATOR = new AtomicLong(0L);
     private Map<Long, Foo> storage = new HashMap<>();
 
+    public InMemoryFooRepository() {
+        System.out.println("Creating In-Memory Foo Repository...");
+    }
+
     @Override
     public Foo save(Foo foo) {
         Long id = ID_GENERATOR.getAndIncrement();
