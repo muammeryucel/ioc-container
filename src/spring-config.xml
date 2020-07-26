@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="fooService" class="com.company.FooService">
+        <constructor-arg ref="fooRepository"/>
+    </bean>
+
+    <beans profile="dev">
+        <bean id="fooRepository" class="com.company.InMemoryFooRepository"/>
+    </beans>
+
+    <beans profile="prod">
+        <bean id="fooRepository" class="com.company.JpaFooRepository"/>
+    </beans>
+</beans>
