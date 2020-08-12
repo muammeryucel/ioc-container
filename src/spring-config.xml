@@ -1,17 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd"
+       default-lazy-init="false">
 
-    <bean id="fooService" class="com.company.FooService">
+    <import resource="classpath:spring-repositories.xml" />
+
+    <context:annotation-config />
+
+    <context:property-placeholder location="classpath:application.properties,file:/home/myucel/overridden.properties" ignore-resource-not-found="true"/>
+
+    <bean id="abstractFooService" class="com.company.FooService" abstract="true"
+          init-method="initMethod" destroy-method="destroyMethod">
+        <property name="someProperty">
+            <list>
+                <value>Test 123</value>
+                <value>Test 456</value>
+            </list>
+        </property>
+        <lookup-method name="getPrototypeDateTime" bean="prototypeDateTime"/>
+        <lookup-method name="getSingletonDateTime" bean="singletonDateTime"/>
+        <replaced-method name="replacedMethod" replacer="methodReplacer"/>
+    </bean>
+
+    <bean id="fooService1" parent="abstractFooService" lazy-init="true" >
         <constructor-arg ref="fooRepository"/>
     </bean>
 
-    <beans profile="dev">
-        <bean id="fooRepository" class="com.company.InMemoryFooRepository"/>
-    </beans>
+    <bean id="fooService2" parent="abstractFooService" autowire="constructor">
+        <property name="someProperty">
+            <list merge="true">
+                <value>Test 789</value>
+            </list>
+        </property>
+    </bean>
 
-    <beans profile="prod">
-        <bean id="fooRepository" class="com.company.JpaFooRepository"/>
-    </beans>
+    <alias name="fooService2" alias="fooService"/>
+
+    <bean id="singletonDateTime" class="java.time.LocalDateTime" factory-method="now" scope="singleton" />
+    <bean id="prototypeDateTime" class="java.time.LocalDateTime" factory-method="now" scope="prototype" />
+
+    <bean id="methodReplacer" class="com.company.MethodReplacerImpl" />
+
 </beans>

@@ -15,6 +15,9 @@ public class InMemoryFooRepository implements FooRepository {
 
     @Override
     public Foo save(Foo foo) {
+
+        System.out.println("Saved by in memory repository: " + foo.getName());
+
         Long id = ID_GENERATOR.getAndIncrement();
         foo.setId(id);
         storage.put(id, foo);
