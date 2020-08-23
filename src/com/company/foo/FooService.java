@@ -1,33 +1,52 @@
-package com.company;
+package com.company.foo;
 
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Lookup;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Lazy
+@Service("fooService")
 public class FooService implements InitializingBean, DisposableBean {
 
-    private final FooRepository repository;
+    @Autowired
+    private ApplicationContext applicationContext;
+
+//    @Autowired(required = false)
+    private FooRepository repository;
     private List<String> someProperty;
 
-    public FooService(FooRepository repository) {
+    private List<FooRepository> repositories;
+
+    @Autowired
+    public void setRepositories(List<FooRepository> repositories) {
+        this.repositories = repositories;
+    }
+
+    //    @Autowired
+    public FooService(@Qualifier("in-memory") FooRepository repository) {
         this.repository = repository;
         System.out.println("FooService created!");
     }
 
+/*    @Autowired
+    public void setRepository(FooRepository repository) {
+        this.repository = repository;
+    }*/
+
+    @Value("#{'${some.property},Test 123,Test 456'.split(',')}")
     public void setSomeProperty(List<String> someProperty) {
         this.someProperty = someProperty;
-    }
-
-    public void initMethod() {
-        System.out.println("Initializing by initMethod()...");
-    }
-
-    public void destroyMethod() {
-        System.out.println("Destroying by destroyMethod()...");
     }
 
     @PostConstruct
@@ -47,19 +66,21 @@ public class FooService implements InitializingBean, DisposableBean {
 
     @Override
     public void destroy() throws Exception {
-        System.out.println("Destroying by DisposibleBean...");
+        System.out.println("Destroying by DisposableBean...");
     }
 
+    @Lookup("singletonDateTime")
     protected LocalDateTime getSingletonDateTime() {
         return null;
     }
 
+    @Lookup("prototypeDateTime")
     protected LocalDateTime getPrototypeDateTime() {
         return null;
     }
 
     public String replacedMethod(String param) {
-        return "Original method called with " + param;
+        return "Replaced method called with " + param;
     }
 
     public Foo createFoo(String foo) {

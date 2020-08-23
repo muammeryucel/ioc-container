@@ -1,6 +1,8 @@
 package com.company;
 
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import com.company.config.ApplicationConfiguration;
+import com.company.foo.FooService;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Main {
 
@@ -8,21 +10,11 @@ public class Main {
 
         System.setProperty("spring.profiles.active", "dev");
 
-        ClassPathXmlApplicationContext appContext =
-                new ClassPathXmlApplicationContext("classpath:spring-config.xml");
+        AnnotationConfigApplicationContext appContext =
+                new AnnotationConfigApplicationContext(ApplicationConfiguration.class);
         appContext.registerShutdownHook();
 
         System.out.println("Application context created!\n-------------------------");
-
-        System.out.println("Singleton date time: " + appContext.getBean("singletonDateTime"));
-        System.out.println("Prototype date time: " + appContext.getBean("prototypeDateTime"));
-        System.out.println("Singleton date time: " + appContext.getBean("singletonDateTime"));
-        System.out.println("Prototype date time: " + appContext.getBean("prototypeDateTime"));
-        System.out.println("Singleton date time: " + appContext.getBean("singletonDateTime"));
-        System.out.println("Prototype date time: " + appContext.getBean("prototypeDateTime"));
-        System.out.println("Singleton date time: " + appContext.getBean("singletonDateTime"));
-        System.out.println("Prototype date time: " + appContext.getBean("prototypeDateTime"));
-
 
         FooService service = appContext.getBean("fooService", FooService.class);
 

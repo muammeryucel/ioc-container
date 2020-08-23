@@ -1,9 +1,11 @@
-package com.company;
+package com.company.foo;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
+//@Repository("inMemoryFooRepository")
+//@Qualifier("in-memory")
 public class InMemoryFooRepository implements FooRepository {
 
     private static AtomicLong ID_GENERATOR = new AtomicLong(0L);

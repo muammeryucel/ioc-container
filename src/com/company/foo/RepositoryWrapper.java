@@ -1,7 +1,8 @@
-package com.company;
+package com.company.foo;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.stereotype.Component;
 
 public class RepositoryWrapper implements FooRepository {
 
@@ -19,6 +20,7 @@ public class RepositoryWrapper implements FooRepository {
         return delegate.save(foo);
     }
 
+    @Component("repositoryWrapperPostProcessor")
     public static class PostProcessor implements BeanPostProcessor {
 
         @Override

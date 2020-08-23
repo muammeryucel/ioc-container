@@ -1,4 +1,4 @@
-package com.company;
+package com.company.foo;
 
 public class Foo {
 
@@ -22,7 +22,7 @@ public class Foo {
         return id;
     }
 
-    void setId(Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }
