@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @Configuration
 @ComponentScan("com.company.foo")
 @Import(DevEnvironmentConfig.class)
-@ImportResource("classpath:spring-config.xml")
 public class ApplicationConfiguration {
 
     @Bean
