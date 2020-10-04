@@ -11,9 +11,6 @@ public class MvcConfiguration implements WebMvcConfigurer {
 
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
-
         registry.jsp();
-
-        System.out.println(registry);
     }
 }
