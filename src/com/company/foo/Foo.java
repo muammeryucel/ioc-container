@@ -25,4 +25,12 @@ public class Foo {
     public void setId(Long id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "Foo{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
