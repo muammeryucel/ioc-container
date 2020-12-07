@@ -10,6 +10,11 @@ public class Foo {
         super();
     }
 
+    public Foo(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Foo(String name) {
         this.name = name;
     }
